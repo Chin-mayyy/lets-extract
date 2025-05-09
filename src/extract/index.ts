@@ -1,6 +1,5 @@
 import { google } from '@ai-sdk/google'
 import { generateObject } from 'ai'
-import 'dotenv/config'
 import { voter_schema } from './schema'
 import { readFile } from 'fs/promises'
 

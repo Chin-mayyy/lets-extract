@@ -15,10 +15,13 @@ The program will extract data from one pdf then exit
 Run the program again with cron job to extract all pdfs
 
 To install dependencies:
+
 ```bash
 bun install
 ```
+
 To run:
+
 ```bash
 bun run src/index.ts
 ```

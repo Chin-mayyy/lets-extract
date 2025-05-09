@@ -1,3 +1,5 @@
+import { Cron } from 'croner'
+import 'dotenv/config'
 import fs from 'fs/promises'
 import path from 'path'
 import { extractDataFromPdf } from './extract'
@@ -25,7 +27,6 @@ async function makeCache() {
     await fs.writeFile('cache.json', JSON.stringify(cache, null, 2))
   }
 }
-
 await makeCache()
 
 type PDF = {
@@ -35,26 +36,33 @@ type PDF = {
   outputPath: string
 }
 
-async function main() {
-  const pdfs: PDF[] = JSON.parse(await fs.readFile('cache.json', 'utf8'))
-  for await (const pdf of pdfs) {
-    if (pdf.done) continue
+let isRunning = false
 
-    console.log(`extracting data for ${pdf.name}`)
-    pdf.done = true
-    await fs.writeFile('cache.json', JSON.stringify(pdfs, null, 2))
+new Cron('*/15 * * * *', {}, async () => {
+  if (isRunning) return
 
-    try {
-      const { object: response } = await extractDataFromPdf(pdf.path)
-      await fs.writeFile(pdf.outputPath, JSON.stringify(response, null, 2))
-      process.exit(0)
-    } catch (e) {
-      console.log(e)
-      pdf.done = false
-      await fs.writeFile('cache.json', JSON.stringify(pdfs, null, 2))
-      process.exit(1)
+  isRunning = true
+  try {
+    const pdfs: PDF[] = JSON.parse(await fs.readFile('cache.json', 'utf8'))
+    for await (const pdf of pdfs) {
+      if (pdf.done) continue
+
+      try {
+        pdf.done = true
+        console.log(`Extracting data from ${pdf.name}`)
+
+        const { object: response } = await extractDataFromPdf(pdf.path)
+        await fs.writeFile(pdf.outputPath, JSON.stringify(response, null, 2))
+        await fs.writeFile('cache.json', JSON.stringify(pdfs, null, 2))
+      } catch (e) {
+        console.log(`Error extracting data from ${pdf.name}: ${e}`)
+        pdf.done = false
+        await fs.writeFile('cache.json', JSON.stringify(pdfs, null, 2))
+      }
+
+      break
     }
+  } finally {
+    isRunning = false
   }
-}
-
-await main()
+})

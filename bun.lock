@@ -6,6 +6,7 @@
       "dependencies": {
         "@ai-sdk/google": "^1.2.14",
         "ai": "^4.3.10",
+        "croner": "^9.0.0",
         "dotenv": "^16.5.0",
         "prettier": "^3.5.3",
         "zod": "^3.24.3",
@@ -42,6 +43,8 @@
     "bun-types": ["bun-types@1.2.11", "", { "dependencies": { "@types/node": "*" } }, "sha512-dbkp5Lo8HDrXkLrONm6bk+yiiYQSntvFUzQp0v3pzTAsXk6FtgVMjdQ+lzFNVAmQFUkPQZ3WMZqH5tTo+Dp/IA=="],
 
     "chalk": ["chalk@5.4.1", "", {}, "sha512-zgVZuo2WcZgfUEmsn6eO3kINexW8RAE4maiQ8QNs8CtpPCSyMiYsULR3HQYkm3w8FIA3SberyMJMSldGsW+U3w=="],
+
+    "croner": ["croner@9.0.0", "", {}, "sha512-onMB0OkDjkXunhdW9htFjEhqrD54+M94i6ackoUkjHKbRnXdyEyKRelp4nJ1kAz32+s27jP1FsebpJCVl0BsvA=="],
 
     "dequal": ["dequal@2.0.3", "", {}, "sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA=="],
 
